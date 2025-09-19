@@ -49,19 +49,13 @@ function usunNiedozwolone($input): string {
     return $input;
 }
 function logSecurityAttempt($type, $input, $match): void {
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    
+    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';    
     $logDir = 'logs';
-    $logFile = $logDir . '/security_attempts.log';
-    // *** DEBUG - pokaż pełną ścieżkę ***
-    //$fullPath = realpath($logDir . '/security_attempts.log');
-    //echo "LOG FILE PATH: " . $fullPath . "<br>";
-    
+    $logFile = $logDir . '/security_attempts.log';      
     if (!is_dir($logDir)) {
         mkdir($logDir, 0755, true);
         echo "Created directory: $logDir<br>";
-    }
-    
+    }    
     $logMessage = sprintf(
         "[%s] %s Attack: '%s' | Pattern: %s | IP: %s\n",
         date('Y-m-d H:i:s'),
@@ -69,9 +63,7 @@ function logSecurityAttempt($type, $input, $match): void {
         substr($input, 0, 50),
         $match,
         $ip
-    );
-    
+    );    
     file_put_contents($logFile, $logMessage, FILE_APPEND | LOCK_EX);
-    echo "Logged to: $logFile<br>";
 }
 ?>
